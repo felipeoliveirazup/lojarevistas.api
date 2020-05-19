@@ -22,7 +22,7 @@ Clone o repositório, neste exemplo estamos salvando na pasta "**Projetos**", vo
 
 ```
 cd Projetos
-git clone https://abcbrasil.visualstudio.com/Zup/_git/ABCBrasil.IB.Pagamento.Tibco
+git clone https://github.com/felipeoliveirazup/lojarevistas.api.git
 ```
 
 Mude para a branch develop e baixe as atualizações:
