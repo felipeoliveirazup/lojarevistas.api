@@ -2,15 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CadastroCliente.Core.Interfaces.Repository
 {
     public interface IClienteRepository
     {
-        bool InsereCliente(Cliente cliente);
-        bool UpdateCliente(Cliente cliente);
-        bool DeleteCliente(Cliente cliente);
-        IEnumerable<Cliente> ListarClientes();
-        Cliente Get(string cpf);
+        Task<bool> InsereCliente(Cliente cliente);
+        Task<bool> UpdateCliente(Cliente cliente);
+        Task<bool> DeleteCliente(Cliente cliente);
+        Task<IEnumerable<Cliente>> ListarClientes();
+        Task<Cliente> Get(string cpf);
     }
 }

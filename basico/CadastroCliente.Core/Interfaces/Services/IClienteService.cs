@@ -2,16 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CadastroCliente.Core.Interfaces.Services
 {
     public interface IClienteService
     {
-        Cliente Get(string cpf);
-        bool InsereCliente(Cliente cliente);
-        bool RemoveCliente(Cliente cliente);
-        bool UpdateCliente(Cliente cliente);
-        IEnumerable<Cliente> ListClientes();
+        Task<Cliente> Get(string cpf);
+        Task<bool> InsereCliente(Cliente cliente);
+        Task<bool> RemoveCliente(Cliente cliente);
+        Task<bool> UpdateCliente(Cliente cliente);
+        Task<IEnumerable<Cliente>> ListClientes();
 
     }
 }

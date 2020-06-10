@@ -4,6 +4,8 @@ using CadastroCliente.Domain.Entidades;
 using CadastroCliente.Infra.IoC;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Configuration;
+using System.Threading.Tasks;
 
 namespace CadastroCliente
 {
@@ -27,7 +29,7 @@ namespace CadastroCliente
                 {
                     Console.WriteLine("Opção inválida");
                 }
-                CallOpcao(iOpcao);
+                CallOpcao(iOpcao).Wait();
 
             } while (sOpcao != "s");
         }
@@ -45,21 +47,21 @@ namespace CadastroCliente
             return opcao;
         }
 
-        static void CallOpcao(int opcao)
-        {
+        async static Task CallOpcao(int opcao)
+        {//static async Task MainAsync()
             switch (opcao)
             {
                 case 1:
-                    InsereCliente();
+                    await InsereCliente();
                     break;
                 case 2:
-                    ReadCliente();
+                    await ReadCliente();
                     break;
                 case 3:
-                    AtualizaCliente();
+                    await AtualizaCliente();
                     break;
                 case 4:
-                    RemoveCliente();
+                    await RemoveCliente();
                     break;
                 default:
                     break;
@@ -98,12 +100,12 @@ namespace CadastroCliente
             }
         }
         
-        static void AtualizaCliente()
+        async static Task AtualizaCliente()
         {
             Console.WriteLine("======== Atualizar Cliente ========");
             Console.WriteLine("Informe o cpf:");
             var cpf = LerString();
-            var cliente = _clienteService.Get(cpf);
+            var cliente = await _clienteService.Get(cpf);
             if (cliente == null)
             {
                 Console.WriteLine("Cliente não encontrado!");
@@ -125,18 +127,18 @@ namespace CadastroCliente
             cliente.Endereco = string.IsNullOrEmpty(newEndereco) ? cliente.Endereco : newEndereco;
             cliente.Idade = ((newIdade.HasValue) && (newIdade > 0)) ? newIdade.Value : cliente.Idade;
 
-            var result = _clienteService.UpdateCliente(cliente);
+            var result = await _clienteService.UpdateCliente(cliente);
             var mensagem_resultado = result ? "atualizado com sucesso" : "não atualizado";
             Console.WriteLine($"Cliente {mensagem_resultado}");
 
         }
 
-        static void RemoveCliente()
+        async static Task RemoveCliente()
         {
-            Console.WriteLine("======== Atualizar Cliente ========");
+            Console.WriteLine("======== Remover Cliente ========");
             Console.WriteLine("Informe o cpf:");
             var cpf = LerString();
-            var cliente = _clienteService.Get(cpf);
+            var cliente = await _clienteService.Get(cpf);
             if (cliente == null)
             {
                 Console.WriteLine("Cliente não encontrado!");
@@ -151,14 +153,14 @@ namespace CadastroCliente
             }
             if (opcao.ToUpper().Equals("S"))
             {
-                var result = _clienteService.RemoveCliente(cliente);
+                var result = await _clienteService.RemoveCliente(cliente);
                 var mensagem_resultado = result ? "removido com sucesso" : "não removido";
                 Console.WriteLine($"Cliente {mensagem_resultado}");
             }
 
         }
 
-        static void InsereCliente()
+        async static Task InsereCliente()
         {
             Console.WriteLine("======== Inserir Cliente ========");
             //nome, idade, CPF, e-mail, telefone e endereço
@@ -174,20 +176,20 @@ namespace CadastroCliente
             var telefone = LerString();
             Console.WriteLine("Informe o endereço:");
             var endereco = LerString();
-            var result =_clienteService.InsereCliente(new Cliente(nome, idade.GetValueOrDefault(), cpf, email, telefone, endereco));
+            var result = await _clienteService.InsereCliente(new Cliente(nome, idade.GetValueOrDefault(), cpf, email, telefone, endereco));
             var mensagem_resultado = result ? "inserido com sucesso" : "não inserido";
             Console.WriteLine($"Cliente {mensagem_resultado}");
         }
 
-        static void ReadCliente()
+         async static Task ReadCliente()
         {
-            Console.WriteLine("======== Inserir Cliente ========");
+            Console.WriteLine("======== Listar Cliente ========");
             //nome, idade, CPF, e-mail, telefone e endereço
             Console.WriteLine("Informe o cpf:");
             var cpf = LerString(true);
             if (string.IsNullOrEmpty(cpf))
             {
-                var result = _clienteService.ListClientes();
+                var result = await _clienteService.ListClientes();
                 foreach (var cliente in result)
                 {
                     cliente.ToConsole();
@@ -196,7 +198,7 @@ namespace CadastroCliente
             }
             else
             {
-                var result = _clienteService.Get(cpf);
+                var result = await _clienteService.Get(cpf);
                 result.ToConsole();
             }
         }

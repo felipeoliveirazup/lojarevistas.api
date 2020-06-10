@@ -6,5 +6,6 @@ namespace CadastroCliente.Core.Interfaces.DataAccess
 {
     public interface IContext
     {
+        string GetConnectionString();
     }
 }

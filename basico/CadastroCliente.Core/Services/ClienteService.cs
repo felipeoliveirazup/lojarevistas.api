@@ -4,6 +4,7 @@ using CadastroCliente.Domain.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CadastroCliente.Core.Services
 {
@@ -14,14 +15,14 @@ namespace CadastroCliente.Core.Services
         {
             _clienteRepository = clienteRepository;
         }
-        public Cliente Get(string cpf)
+        public async Task<Cliente> Get(string cpf)
         {
-            return _clienteRepository.Get(cpf);
+            return await _clienteRepository.Get(cpf);
         }
 
-        public bool InsereCliente(Cliente cliente)
+        public async Task<bool> InsereCliente(Cliente cliente)
         {
-            var _cliente = Get(cliente.Cpf);
+            var _cliente = await Get(cliente.Cpf);
             if (_cliente != null)
             {
                 Console.WriteLine("Cpf já existe.");
@@ -29,7 +30,7 @@ namespace CadastroCliente.Core.Services
             }
             try
             {
-                return _clienteRepository.InsereCliente(cliente);
+                return await _clienteRepository.InsereCliente(cliente);
             }
             catch (Exception e)
             {
@@ -38,7 +39,7 @@ namespace CadastroCliente.Core.Services
             }
         }
 
-        public bool RemoveCliente(Cliente cliente)
+        public async Task<bool> RemoveCliente(Cliente cliente)
         {
             var _cliente = Get(cliente.Cpf);
             if (_cliente == null)
@@ -48,7 +49,7 @@ namespace CadastroCliente.Core.Services
             }
             try
             {
-                return _clienteRepository.DeleteCliente(cliente);
+                return await _clienteRepository.DeleteCliente(cliente);
             }
             catch (Exception e)
             {
@@ -57,7 +58,7 @@ namespace CadastroCliente.Core.Services
             }
         }
 
-        public bool UpdateCliente(Cliente cliente)
+        public async Task<bool> UpdateCliente(Cliente cliente)
         {
             var _cliente = Get(cliente.Cpf);
             if (_cliente == null)
@@ -67,7 +68,7 @@ namespace CadastroCliente.Core.Services
             }
             try
             {
-                return _clienteRepository.UpdateCliente(cliente);
+                return await _clienteRepository.UpdateCliente(cliente);
             }
             catch (Exception e)
             {
@@ -76,9 +77,9 @@ namespace CadastroCliente.Core.Services
             }
         }
 
-        public IEnumerable<Cliente> ListClientes()
+        public async Task<IEnumerable<Cliente>> ListClientes()
         {
-            return _clienteRepository.ListarClientes();
+            return await _clienteRepository.ListarClientes();
         }
     }
 }
